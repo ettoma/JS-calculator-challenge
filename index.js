@@ -23,6 +23,7 @@ function clearResultScreen() {
 }
 
 function calculateResult() {
+  // if (currentOperation == '' || previousNum == '' || currentNum == '') return;
   switch (currentOperation) {
     case "+":
       resultNumber = parseFloat(previousNum) + parseFloat(currentNum);
@@ -34,23 +35,26 @@ function calculateResult() {
       resultScreen.innerHTML = parseFloat(resultNumber);
       currentNum = "";
       break;
-
+      
     case "*":
       resultNumber = parseFloat(previousNum) * parseFloat(currentNum);
       resultScreen.innerHTML = parseFloat(resultNumber);
       currentNum = "";
       break;
-    case "/":
+      case "/":
       resultNumber = parseFloat(previousNum) / parseFloat(currentNum);
       resultScreen.innerHTML = parseFloat(resultNumber);
       currentNum = "";
       break;
     default:
       break;
-  }
+    }
 }
 
 function handleOperandBtn(operation) {
+  if (currentOperation != '' &&  previousNum != '' && currentNum != '') {
+    calculateResult();
+  }
   currentOperation = operation.target.value;
   if (resultNumber !== "") {
     previousNum = parseFloat(resultNumber);
