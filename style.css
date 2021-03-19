@@ -34,8 +34,9 @@ button:hover {
 }
 
 .result-screen {
+  border-radius: 5px;
   grid-column: auto / span 3;
-  background-color: rgb(0, 54, 126);
+  background-color: #00377ebd;
   color: white;
   text-align: end;
   padding: 10px;
