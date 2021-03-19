@@ -1,15 +1,16 @@
-const numberButtons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  operandButtons = ["+", "-", "*", "/", "C"],
-  equalsButton = "=";
-const resultScreen = document.querySelector(".result-screen");
+const numberButtons = document.querySelectorAll(".number-button"),
+  operandButtons = document.querySelectorAll(".operand-button"),
+  equalsButton = document.querySelector(".equals-button"),
+  resultScreen = document.querySelector(".result-screen");
 
 let currentNum = "";
 let previousNum = "";
 let currentOperation = "";
+let resultNumber = "";
 
 function handleNumberBtnClick(event) {
   val = event.target.value;
-  currentNum = currentNum + val;
+  currentNum = parseFloat(currentNum + val);
   resultScreen.innerHTML = currentNum;
 }
 
@@ -18,89 +19,63 @@ function clearResultScreen() {
   previousNum = "";
   resultScreenDisplayNum = "";
   resultScreen.innerHTML = 0;
+  resultNumber = "";
 }
 
 function calculateResult() {
   switch (currentOperation) {
     case "+":
-      resultNumber = parseInt(previousNum) + parseInt(currentNum);
-      resultScreen.innerHTML = resultNumber;
-      previousNum = resultNumber;
+      resultNumber = parseFloat(previousNum) + parseFloat(currentNum);
+      resultScreen.innerHTML = parseFloat(resultNumber);
       currentNum = "";
-      // currentOperation = undefined;
       break;
     case "-":
-      resultNumber = parseInt(previousNum) - parseInt(currentNum);
-      resultScreen.innerHTML = resultNumber;
-      previousNum = resultNumber;
+      resultNumber = parseFloat(previousNum) - parseFloat(currentNum);
+      resultScreen.innerHTML = parseFloat(resultNumber);
       currentNum = "";
-      // currentOperation = undefined;
       break;
 
     case "*":
-      resultNumber = parseInt(previousNum) * parseInt(currentNum);
-      resultScreen.innerHTML = resultNumber;
-      previousNum = resultNumber;
+      resultNumber = parseFloat(previousNum) * parseFloat(currentNum);
+      resultScreen.innerHTML = parseFloat(resultNumber);
       currentNum = "";
-      // currentOperation = undefined;
       break;
     case "/":
-      resultNumber = parseInt(previousNum) / parseInt(currentNum);
-      resultScreen.innerHTML = resultNumber;
-      previousNum = resultNumber;
+      resultNumber = parseFloat(previousNum) / parseFloat(currentNum);
+      resultScreen.innerHTML = parseFloat(resultNumber);
       currentNum = "";
-      // currentOperation = undefined;
       break;
     default:
       break;
   }
-  currentOperation = undefined;
 }
 
 function handleOperandBtn(operation) {
-  if (currentNum === "") return;
-  if (previousNum !== "") {
-    currentOperation = operation.target.value;
-    calculateResult();
-  }
   currentOperation = operation.target.value;
-  previousNum = currentNum;
-  currentNum = "";
+  if (resultNumber !== "") {
+    previousNum = parseFloat(resultNumber);
+  } else {
+    previousNum = parseFloat(currentNum);
+    currentNum = "";
+  }
 }
 
-function createButtons() {
+function handleButtonClicked() {
   numberButtons.forEach(function (b) {
-    btn = document.createElement("button");
-    btn.innerHTML = b;
-    btn.value = b;
-    btn.className = "number-button";
-    btn.addEventListener("click", handleNumberBtnClick);
-    document.querySelector(".main-container").appendChild(btn);
+    b.addEventListener("click", handleNumberBtnClick);
   });
   operandButtons.forEach(function (b) {
-    btn = document.createElement("button");
-    btn.innerHTML = b;
-    btn.className = "operand-button";
-    btn.value = b;
-    if (btn.value == "C") {
-      btn.addEventListener("click", clearResultScreen);
-    } else if (btn.value == "+" || "-" || "*" || "/") {
-      btn.addEventListener("click", handleOperandBtn);
+    if (b.value == "C") {
+      b.addEventListener("click", clearResultScreen);
     } else {
-      // btn.addEventListener("click", calculateResult);
+      b.addEventListener("click", handleOperandBtn);
     }
-    document.querySelector(".main-container").appendChild(btn);
   });
-  equals = document.createElement("button");
-  equals.innerHTML = "=";
-  equals.className = "operand-button";
-  equals.value = "=";
-  document.querySelector(".main-container").appendChild(equals);
-  equals.addEventListener("click", calculateResult);
+  equalsButton.addEventListener("click", calculateResult);
 }
 
 function init() {
-  createButtons();
+  handleButtonClicked();
 }
 
 init();
